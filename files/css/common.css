@@ -1,0 +1,219 @@
+html					{height:100%;}
+body					{height:100%; margin:0 0 1px; TEXT-DECORATION: none;   }
+#wrapper 			{width:610px; margin:20px auto; font-family:"Helvetica Neue", Helvetica, Arial, Verdana; align:center}
+a							{color:#000; font-size:small;    text-decoration: none;}
+a:hover				{color:#251d17; background-color: #EEEEEE;}
+.highlight { background-color: pink }
+
+ul#posts			{list-style:none; margin:20px 0; padding:0;}
+ul#posts li		{font-size:small; border-bottom:1px solid #D7D6D5; margin:0; padding:5px 7px; line-height:1.5;}
+
+
+
+#nav-main {
+	top:2px;
+	right:0;
+	height:30px;
+	width:640px;
+	font-size:1.2em;
+	z-index:1;
+}
+
+
+
+
+ol
+{
+  width: 48em;  /* room for 3 columns */
+}
+ol li
+{
+  float: left;
+  width: 12em;  /* accommodate the widest item */
+}
+/* stop the floating after the list */
+br
+{
+  clear: left;
+}
+/* separate the list from what follows it */
+div.wrapper
+{
+  margin-bottom: 1em;
+}
+
+
+
+/* anchor styling */
+ol li a
+{
+  display: block;
+  width: 11em;
+  text-decoration: none;
+}
+ol li a:hover
+{
+  color: #FFF; /* white */
+  background-color: #251d17; /* brown */
+}
+
+
+
+
+#navbar
+{
+margin: 0;
+padding: 0px 0px 0px 60px;
+}
+
+#navbar ul, #navbar li
+{
+margin: 0;
+padding: 0;
+display: inline;
+list-style-type: none;
+font: 18px arial;
+}
+
+#navbar a:link, #navbar a:visited
+{
+text-transform: uppercase; 
+float: left;
+line-height: 14px;
+font-weight: bold;
+margin: 0 10px 4px 10px;
+text-decoration: none;
+color: #999;
+}
+
+#navbar a:link#current, #navbar a:visited#current, #navbar a:hover
+{
+text-transform: uppercase; 
+border-bottom: 4px solid red;
+padding-bottom: 2px;
+background: transparent;
+color: #000;
+}
+
+#navbar a:hover { color: #000000; }
+
+
+
+
+.roundedcornr_box_855745 {
+	background: url(/../media/images/roundedcornr_855745_tl.png) no-repeat top left;
+}
+.roundedcornr_top_855745 {
+	background: url(/../media/images/roundedcornr_855745_tr.png) no-repeat top right;
+}
+.roundedcornr_bottom_855745 {
+	background: url(/../media/images/roundedcornr_855745_bl.png) no-repeat bottom left;
+}
+.roundedcornr_bottom_855745 div {
+	background: url(/../media/images/roundedcornr_855745_br.png) no-repeat bottom right;
+}
+.roundedcornr_content_855745 {
+	background: url(/../media/images/roundedcornr_855745_r.png) top right repeat-y;
+}
+
+.roundedcornr_top_855745 div, .roundedcornr_top_855745,
+.roundedcornr_bottom_855745 div, .roundedcornr_bottom_855745 {
+	width: 100%;
+	height: 15px;
+	font-size: 1px;
+}
+.roundedcornr_content_855745, .roundedcornr_bottom_855745 {
+	margin-top: -19px;
+}
+.roundedcornr_content_855745 { padding: 0 15px; }
+
+
+
+#sort{
+  position:absolute;
+  top:0px;
+  right:0px;
+  padding:0 5px 0 5px;
+  background:#ffffff;
+  font-size: 62%;
+  font-family:"Helvetica Neue", Helvetica, Arial, Verdana;
+}
+
+
+
+#hor-minimalist-b td  {
+	font-size: small;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #d7d6d5;
+	margin-top: 0pt;
+	margin-right: 0pt;
+	margin-bottom: 0pt;
+	margin-left: 0pt;
+	padding-top: 5px;
+	padding-right: 7px;
+	padding-bottom: 5px;
+	padding-left: 7px;
+	line-height: 1.5;
+	color: #000; 
+}
+
+#hor-minimalist-b a  {
+color: #000;
+}
+
+
+#dynacloud a  {
+color: #999;
+}
+
+/*
+  Don't change this
+*/
+
+.dynacloud a.f1 { font-size: 18px; line-height: 18px; margin: 4px;}
+.dynacloud a.f2 { font-size: 19px; line-height: 19px; margin: 4px;}
+.dynacloud a.f3 { font-size: 23px; line-height: 23px; margin: 4px;}
+.dynacloud a.f4 { font-size: 24px; line-height: 24px; margin: 4px;}
+.dynacloud a.f5 { font-size: 25px; line-height: 25px; margin: 4px;}
+.dynacloud a.f6 { font-size: 26px; line-height: 26px; margin: 4px;}
+.dynacloud a.f7 { font-size: 27px; line-height: 27px; margin: 4px; font-weight: bold;color:#000;}
+.dynacloud a.f8 { font-size: 30px; line-height: 30px; margin: 4px; font-weight: bold;color:#000;  }
+.dynacloud a.f9 { font-size: 31px; line-height: 31px; margin: 4px; font-weight: bold;color:#000;  }
+.dynacloud a.f10 { font-size: 32px; line-height: 32px; margin: 4px; font-weight: bold;color:#000;  }
+.dynacloud a.f11 { font-size: 33px; line-height: 33px; margin: 4px; font-weight: bold; color:#000;  }
+
+.dynacloud a.f31 { font-size: 31px; line-height: 31px; }
+.dynacloud a.f32 { font-size: 32px; line-height: 32px; }
+.dynacloud a.f33 { font-size: 33px; line-height: 33px; }
+.dynacloud a.f34 { font-size: 34px; line-height: 34px; }
+.dynacloud a.f35 { font-size: 35px; line-height: 35px; }
+.dynacloud a.f36 { font-size: 36px; line-height: 36px; }
+.dynacloud a.f37 { font-size: 37px; line-height: 37px; }
+.dynacloud a.f38 { font-size: 38px; line-height: 38px; }
+.dynacloud a.f39 { font-size: 39px; line-height: 39px; }
+.dynacloud a.f40 { font-size: 40px; line-height: 40px; }
+.dynacloud a.f41 { font-size: 41px; line-height: 41px; }
+.dynacloud a.f42 { font-size: 42px; line-height: 42px; }
+.dynacloud a.f43 { font-size: 43px; line-height: 43px; }
+.dynacloud a.f44 { font-size: 44px; line-height: 44px; }
+.dynacloud a.f45 { font-size: 45px; line-height: 45px; }
+.dynacloud a.f46 { font-size: 46px; line-height: 46px; }
+.dynacloud a.f47 { font-size: 47px; line-height: 47px; }
+.dynacloud a.f48 { font-size: 48px; line-height: 48px; }
+.dynacloud a.f49 { font-size: 49px; line-height: 49px; }
+.dynacloud a.f50 { font-size: 50px; line-height: 50px; }
+.dynacloud a.f51 { font-size: 51px; line-height: 51px; }
+.dynacloud a.f52 { font-size: 52px; line-height: 52px; }
+.dynacloud a.f53 { font-size: 53px; line-height: 53px; }
+.dynacloud a.f54 { font-size: 54px; line-height: 54px; }
+.dynacloud a.f55 { font-size: 55px; line-height: 55px; }
+.dynacloud a.f56 { font-size: 56px; line-height: 56px; }
+.dynacloud a.f57 { font-size: 57px; line-height: 57px; }
+.dynacloud a.f58 { font-size: 58px; line-height: 58px; }
+.dynacloud a.f59 { font-size: 59px; line-height: 59px; }
+.dynacloud a.f60 { font-size: 60px; line-height: 60px; }
+.dynacloud a.f61 { font-size: 61px; line-height: 61px; }
+.dynacloud a.f62 { font-size: 62px; line-height: 62px; }
+.dynacloud a.f63 { font-size: 63px; line-height: 63px; }
+.dynacloud a.f64 { font-size: 64px; line-height: 64px; }

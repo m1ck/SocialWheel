@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Social Wheel</title>
+
+		
+
+		<!-- JSViz Libraries -->
+		<script language="JavaScript" src="/files/js/DataGraph.js"></script>
+		<script language="JavaScript" src="/files/js/Magnet.js"></script>
+		<script language="JavaScript" src="/files/js/Spring.js"></script>
+		<script language="JavaScript" src="/files/js/Particle.js"></script>
+		<script language="JavaScript" src="/files/js/ParticleModel.js"></script>
+		<script language="JavaScript" src="/files/js/Timer.js"></script>
+		<script language="JavaScript" src="/files/js/EventHandler.js"></script>
+		<script language="JavaScript" src="/files/js/HTMLGraphView.js"></script>
+		<script language="JavaScript" src="/files/js/SVGGraphView.js"></script>
+		<script language="JavaScript" src="/files/js/RungeKuttaIntegrator.js"></script>
+		<script language="JavaScript" src="/files/js/Control.js"></script>
+
+		<!--  Libraries -->
+		<script language="JavaScript" src="/files/js/twitter.js"></script>
+		<script language="JavaScript" src="/files/js/HTTP.js"></script>
+
+				<script language="JavaScript">
+
+			var searcher;
+
+			function init() {
+
+				// Get the size of our window
+			    var FRAME_WIDTH;
+			    var FRAME_HEIGHT;
+
+			    if (document.all) {
+			      FRAME_WIDTH = document.body.offsetWidth - 10;
+			      FRAME_HEIGHT = document.documentElement.offsetHeight - 10 - 28;
+			    } else {
+			      FRAME_WIDTH = window.innerWidth - 10;
+			      FRAME_HEIGHT = window.innerHeight - 10 - 28;
+			    }
+// todo
+				// Create a View using SVG when available.
+				var view;
+ 				if ( document.implementation.hasFeature("org.w3c.dom.svg", '1.1') ) {
+ 					view = new SVGGraphView( 0, 26, FRAME_WIDTH, FRAME_HEIGHT, true );
+ 				} else {
+ 					view = new HTMLGraphView( 0, 26, FRAME_WIDTH, FRAME_HEIGHT, true );
+ 				}
+
+				// Create a Particle System
+				var particleModel = new ParticleModel( view );
+				particleModel.start();
+
+				// Control contains event handlers that will enable the model to respond
+				// to user interaction.
+				var control = new Control( particleModel, view );
+
+				// DataGraph
+				var dataGraph = new DataGraph();
+
+				// Initialize Amazon Similarity Handler
+				searcher = new AudioScrobbler( dataGraph, particleModel );
+
+				// Initialize the Node Handler and start observing the DataGraph
+				var nodeHandler = new NodeHandler( dataGraph, particleModel, view, control );
+				dataGraph.subscribe( nodeHandler );
+
+				// In this demo, we add nodes over time, enabling the model to organize
+				// under less entropy. The build timer will add 1 node every 150ms.
+				var buildTimer = new Timer( 150 );
+				buildTimer.subscribe( nodeHandler );
+				buildTimer.start();
+
+			    if ( document.location.href.indexOf('#') != -1 ) {
+			    	artist = document.location.href.substring( document.location.href.indexOf('#')+1 );
+					searcher.search( unescape(artist) );
+			    }
+
+			}
+
+			/**
+			 * The NodeHandler is responsible for translating our Data Model (DataGraph)
+			 * into a ParticleModel and View.
+			 *
+			 * @param {DataGraph} dataGraph
+			 * @param {ParticleModel} particleModel
+			 * @param {GraphView} view
+			 */
+			var NodeHandler = function( dataGraph, particleModel, view, control ) {
+
+				this.dataGraph = dataGraph;
+				this.particleModel = particleModel;
+				this.view = view;
+
+				this.nodeQueue = new Array();
+				this.relationshipQueue = new Array();
+
+				/*
+				 * Handle a new node.
+				 *
+				 * @param {DataGraphNode} dataGraphNode
+				 */
+				this['newDataGraphNode'] = function( dataGraphNode ) {
+					this.enqueueNode( dataGraphNode );
+				}
+
+				/*
+				 * Handle a new relationship.
+				 *
+				 * @param {DataGraphNode} nodeA
+				 * @param {DataGraphNode} nodeB
+				 */
+				this['newDataGraphEdge'] = function( nodeA, nodeB ) {
+					this.enqueueRelationship( nodeA, nodeB );
+				}
+
+				/*
+				 * Enqueue a node for modeling later.
+				 *
+				 * @param {DataGraphNode} dataGraphNode
+				 */
+				this['enqueueNode'] = function( dataGraphNode ) {
+					this.nodeQueue.push( dataGraphNode );
+				}
+
+				/*
+				 * Enqueue a relationship for modeling later.
+				 *
+				 * @param {DataGraphNode} nodeA
+				 * @param {DataGraphNode} nodeB
+				 */
+				this['enqueueRelationship'] = function( nodeA, nodeB ) {
+					this.relationshipQueue.push( {'nodeA': nodeA, 'nodeB': nodeB} );
+				}
+
+				/*
+				 * Dequeue a node and create a particle representation in the model.
+				 */
+				this['dequeueNode'] = function() {
+					var node = this.nodeQueue.shift();
+					if ( node ) {
+						this.addParticle( node );
+						return true;
+					}
+					return false;
+				}
+
+				/*
+				 * Dequeue a relationship and add to the model.
+				 */
+				this['dequeueRelationship'] = function() {
+					var edge = this.relationshipQueue.shift();
+					if ( edge ) {
+						this.addSimilarity( .05, edge.nodeA, edge.nodeB );
+					}
+				}
+
+				/*
+				 * Called by timer to control dequeuing of nodes into addParticle.
+				 */
+				this.update = function() {
+					var nodes = this.dequeueNode();
+					if ( !nodes ) {
+						this.dequeueRelationship();
+					}
+				}
+
+				/*
+				 * Add a particle to the model and view.
+				 *
+				 * @param {DataGraphNode} node
+				 */
+				this['addParticle'] = function( dataGraphNode ) {
+
+					// Create a particle to represent this data node in our model.
+					particle = this.particleModel.makeParticle( dataGraphNode.mass, 0, 0 );
+					dataGraphNode.particle = particle;
+
+					// Determine if this particle's position should be fixed.
+					if ( dataGraphNode.fixed ) { particle.fixed = true; }
+
+					// Assign a random position to the particle.
+					var rx = Math.random()*2-1;
+					var ry = Math.random()*2-1;
+					particle.positionX = rx - 50/this.view.skew;
+					particle.positionY = ry;
+
+					// Add repsulsive force between this particle and all other particle.
+					for( var j=0, l=this.particleModel.particles.length; j<l; j++ ) {
+						if ( this.particleModel.particles[j] != particle ) {
+							this.particleModel.makeMagnet( particle, this.particleModel.particles[j], -15000, 64 );
+						}
+					}
+
+					var particleParent = false;
+
+					// Add a spring force between this particle and any particles already sharing an edge.
+					// The first is regarded as a parent -- this has no significance in this model other
+					//   than helping dictate the new particle's starting position.
+					// Other edges can be added with addEdge later.
+					for( var c in dataGraphNode.edges ) {
+
+						if ( !particleParent ) {
+							particleParent = true;
+							particle.positionX = dataGraphNode.edges[c].particle.positionX + rx;
+							particle.positionY = dataGraphNode.edges[c].particle.positionY + ry;
+						}
+						// make a strong similarity relationship between these particles
+						this.addSimilarity( .2, dataGraphNode, dataGraphNode.edges[c] );
+					}
+
+					var artist = dataGraphNode.artist;
+					var artisttitle = dataGraphNode.artisttitle;
+					if ( !artist ) { artist=""; }
+					var title = dataGraphNode.title;
+					if ( !title ) { title=""; }
+					var image = dataGraphNode.image;
+					var label = dataGraphNode.label;
+
+					// If an image has been defined of this data node, use it to create the view node.
+					if ( image ) {
+                   
+						var imgNode = document.createElement('div');
+						imgNode.style.position = "absolute";
+						imgNode.className = "artist";
+						imgNode.height = '2';
+						imgNode.width = '2';
+						imgNode.style.backgroundImage = "url('" + dataGraphNode.image + "')";
+						imgNode.innerHTML = '<div style="padding-left:25px;" class="artist" onclick="' + "searcher.search('" + artist.replace(/"/g,'&quot;') + "' , '" + dataGraphNode.image  + "'       )" + '">' +
+							'<b>' + artisttitle + '</b></div>';
+						imgNode.onmousedown =  new EventHandler( control, control.handleMouseDownEvent, particle.id )
+						var viewNode = this.view.addNode( particle, imgNode, 25, 25 );
+
+					// If no image is available, create a view node from the available text.
+					} else {
+						var txtNode = document.createElement('div');
+						txtNode.style.position = "absolute";
+						txtNode.className = "artist";
+						txtNode.innerHTML = '<div class="artist" style="text-align:center;" onclick="' + "searcher.search('" + artist.replace(/"/g,'&quot;') + "')" + '">' +
+							artisttitle + '<br></div>';
+						txtNode.onmousedown =  new EventHandler( control, control.handleMouseDownEvent, particle.id )
+						var viewNode = this.view.addNode( particle, txtNode, 70, 10 );
+					}
+
+					dataGraphNode.viewNode = viewNode;
+
+					return dataGraphNode;
+				},
+
+				/*
+				 * Add a spring force between two edges + corresponding edge in the view.
+				 *
+				 * @param {Number} springConstant
+				 * @param {DataGraphNode} nodeA
+				 * @param {DataGraphNode} nodeB
+				 */
+				this['addSimilarity'] = function( springConstant, nodeA, nodeB ) {
+					particleModel.makeSpring( nodeA.particle, nodeB.particle, springConstant, .2, 80 );
+
+					var props;
+						if ( document.implementation.hasFeature("org.w3c.dom.svg", '1.1') ) {
+						props = {
+							'stroke': "#bbbbbb",
+							'stroke-width': '2px',
+							'stroke-dasharray': '2,8'
+						}
+					} else {
+						props = {
+							'pixelColor': "#aaaaaa",
+							'pixelWidth': '2px',
+							'pixelHeight': '2px',
+							'pixels': 15
+						}
+					}
+					this.view.addEdge( nodeA.particle, nodeB.particle, props );
+				}
+			}
+
+		</script>
+
+		<style type="text/css">
+			html {
+				filter: expression(document.execCommand("BackgroundImageCache", false, true));
+			}
+
+			a {
+				color: #99ccff
+			}
+
+			body {
+				margin: 0;
+				padding: 0;
+				overflow: hidden;
+			}
+
+			form {
+				margin: 0;
+				padding: 0;
+			}
+
+			div.artist {
+				font-family: Tahoma, Arial, sans-serif;
+				font-weight: bold;
+				font-size: 8px;
+				color: #336699;
+				text-align: left;
+				width: 50px;
+				height: 25px;
+                background-repeat: no-repeat;
+			}
+
+			a.artist {
+				color: #336699;
+				text-decoration: none;
+			}
+
+			#titlebar {
+				height:26px;
+				width: 100%;
+				background-color:#444444;
+				color:#ffffff;
+				font-family: Verdana, Arial, sans-serif;
+				font-weight: bold;
+				padding: 0;
+			}
+
+			#artistResults {
+				display: none;
+				color: #000000;
+				border: 1px dashed #444444;
+				border-top: 0px;
+				width: 300px;
+			}
+		</style>
+	</head>
+	<body onload="init()">
+		<form onsubmit="searcher.search(document.getElementById('artistName').value);return(false);">
+		<table id="titlebar">
+
+			<tr>
+				<td>Name: <input type="text" id="artistName" value=""> <input type="submit" value="Search"></td>
+				<td align="right">Twitter  Friends </td>
+			</tr></table>
+		</form>
+		<div id="artistResults"></div>
+	</body>
+
+</html>

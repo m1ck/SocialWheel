@@ -1,0 +1,12 @@
+from django.conf.urls.defaults import *
+
+urlpatterns = patterns('',
+    (r"^$", "wheel.main.views.main"),
+    (r'^getfriends/', "wheel.main.views.getfriends"),
+    (r'^numfriends/', "wheel.main.views.numfriends"),
+    (r'^test/(?P<id>\w+)/$', "wheel.main.views.test"),
+    (r'^service/(?P<site>\w+)/$', "wheel.main.views.showwheel"),
+    (r'^(?P<site>\w+)/$', "wheel.main.views.showwheel"),
+
+
+)

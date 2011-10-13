@@ -1,0 +1,188 @@
+/* GENERAL */
+
+body, tabledata {font-family: arial,sans-serif;}
+#tip {font-size: 75%;}
+#u {color: #7777cc}
+a {color: #0000cc}
+p {margin-top: 1.3em;}
+form {margin: 0;}
+a.u {color: #7777cc;}
+
+select { background-color: #ffffff ! important; }
+img, table {border: none}
+
+/* FRONTPAGE */
+
+/* Trends Search Examples */
+table.examples td {
+    font-size: 79%;
+    padding-right: 30;
+    white-space: nowrap;
+}
+
+/* Hot Searches Table on Front Page */  
+table.hotTerm td {
+    font-size: 79%;
+    padding: 3 4 0 0;
+    vertical-align: top;
+    text-align: left;
+    white-space: nowrap
+}
+
+table.hotTerm td.num {
+    color: #676767;
+    text-align: right;
+}
+
+.new {
+    padding-right: 0;
+    font-size: 9px;
+    color: #da0d10;
+}
+
+/* RESULTS PAGE */
+
+table.news {
+    margin-left: 20;
+}
+table.news td {
+    line-height: 1.1em;
+    padding-bottom: .4em;
+}
+
+table.tabs td {
+    border-bottom: 1px solid #676767;
+    padding: 2 10;
+    white-space: nowrap;
+}
+table.tabs td.selected {
+    border-left: 1px solid #888888;
+    border-right: 1px solid #888888;
+    border-top: 1px solid #888888;
+    border-bottom: none;
+}
+
+table.tabs td.selected a {
+    font-weight: bold;
+    color: #000000;
+    text-decoration: none;
+}
+
+#listoptions {
+    margin-top: 5;
+    line-height: 1.4em;
+}
+#listborder {
+  width: 580;
+  border-right: 1px solid #aaaaaa;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+#graphcontainer {
+    border: 1px solid #cccccc;
+    width:582;
+}
+
+#legend { padding: 5 0}
+#graphlinks td {padding: 3 0}
+td.c0 {color: #4684ee}td.c1 {color: #dc3912}td.c2 {color: #ff9900}td.c3 {color: #008000}td.c4 {color: #4942cc}table.list {
+    border-left: 1px solid #aaaaaa;
+    border-bottom: 1px solid #aaaaaa;
+}
+table.list tr.hl {
+    background-color: #F4F8FF;
+}
+
+table.list td {
+    border-bottom: 1px solid #E8EEF7; 
+    padding-right: 30;
+}
+
+table.list td.num{
+    padding: 5;    
+}
+
+table.list span.percent {
+    display: none;
+}
+
+table.bar td {
+    border-bottom: none;
+    padding:0;
+}
+
+table.list table.bar {
+    padding: 0;
+    border-top: 1px solid #E8EEF7;
+}
+
+#more_link {text-align: right}
+
+
+/* HOT TERMS */
+
+/* top level layout */
+table.hotLayout td.hotSection {
+    padding: 0 0 15 15;
+    vertical-align: top;
+}
+
+table.hotLayout td.hotColumn {
+    padding: 0 15 0 0;
+    vertical-align: top;
+}
+
+/* list renderer classes */
+table.Z2_list td{
+    font-size: 79%;
+    padding: 0 3 3 0;
+    vertical-align: top;
+}
+
+table.Z2_list td.num {
+    color: #676767;
+    text-align: right;
+}
+
+table.Z2_list td.selected {
+  font-weight: bold;
+}
+
+table.Z2_list td.u {
+  color: #7777cc;
+}
+
+/* List browser left hand column. */
+div.hotColumn {
+    border-right: 1px solid #ccc;
+    padding-right: 0;
+    width: 13em;
+}
+
+/* Hot meter */
+table.hotScale {
+    border-collapse: collapse;
+    margin-top: 4px;
+    height: .35em;
+}
+
+table.hotScale td{
+    width: 50;
+    padding: 0;
+    margin: 0 4 0 0;
+    font-size: 1px;
+    border: 1px solid #fff;
+}
+
+table.hotScale td.c0 {background-color: #FFCF02;}
+table.hotScale td.c1 {background-color: #FF9F02;}
+table.hotScale td.c2 {background-color: #FF6801;}
+table.hotScale td.c3 {background-color: #FE3301;}
+table.hotScale td.c4 {background-color: #D01300;}
+table.hotScale td.g {background-color: #ccc;}
+
+img.hotGraph {
+    border: 1px solid #ccc;
+    margin: 1.6em 0 5 0;
+}

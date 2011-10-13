@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+<title>View all tags at Pennypacker, the Penny Arcade Firefox extension</title>
+<script type="text/javascript" src="/files/js/tagcloud.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+
+</head>
+<body >
+
+
+<div id="load">Getting {{ id }}'s friends</div>
+<div id="tagcloudc" style="position: relative; width: 500px; height: 400px; top: -10px; left: 125px"></div>
+
+<script type="text/javascript">
+  var tmap = new TagCloud(document.getElementById('tagcloudc'),'random');
+     var araaywheelData = new Array();
+
+     var flen = {{flen}};
+     var theData =  {{friends}};
+	 var u = 0;
+	 var activeAjaxConnections = 0;
+	 for( x = 0; theData[x]; x++ ) {
+	 	
+	               jQuery.ajax({
+	                   beforeSend: function() {
+                        activeAjaxConnections++;  },
+						url: "../../numfriends/?id="+theData[x]+"&site={{site}}",
+						dataType: "json",
+						success: function(data){  activeAjaxConnections--;  araaywheelData[u]= { id: theData[u] ,text: theData[u] ,connections: data.contacts };   u++; 
+						jQuery("div#load").html(theData[u]+" = "+data.contacts);
+						tmap.addNode(new Node(theData[u],data.contacts));
+						// alert(activeAjaxConnections);
+						 
+						  if (0 == activeAjaxConnections) {						
+                              // this was the last Ajax connection, do the thing
+                              // alert('this was the last Ajax connection');  
+   
+                              tmap.draw();
+                                                     
+							  jQuery("div#load").html("{{ site }} friendcloud for {{ id }} ");
+                                                        
+						      }
+						}
+					});
+	  }
+      </script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head> 
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" href="http://hot-trends-tag-cloud.appspot.com/media/images/favicon.ico" type="image/x-icon">
+
+<title> Social Wheel</title>
+      
+      
+             <script src="/files/js/DD_roundies_0.0.2a.js"></script>
+		<script>
+			DD_roundies.addRule('#sbox', '58px', true);
+
+		</script>
+<style type="text/css">
+  
+    body {  
+    background-color:#000000; }
+	#sbox {position:relative; float:left; margin:0 5px 5px 0; padding:20px 20px 20px 40px; border:8px solid #C3D9FF; background:#ffffff; color:#000; text-decoration:none;}
+
+			
+</style> 
+
+<link rel="stylesheet" type="text/css" href="/files/css/common.css">
+
+      
+      
+      
+      <style type="text/css" media="screen">
+
+         div#canvas {
+         
+            border:1px solid #000000; 
+            display: block;
+           
+            background-color: #000;
+            font: 12px Verdana, Tahoma, Arial, sans-serif;
+            color: #fff;
+         }
+         div#wheel {
+            display: block;
+            border: 1px solid #fff;
+            background-color: #000;
+            font: 12px Verdana, Tahoma, Arial, sans-serif;
+            color: #fff;
+         }
+
+      </style>
+      
+
+      
+      
+       <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
+       <script type="text/javascript" src="/files/js/excanvas.js"></script>
+       <script type="text/javascript" src="/files/js/canvastext.js"></script>
+       <script type="text/javascript" src="/files/js/mootools-1.2-core-nc.js"></script>
+       <script type="text/javascript" src="/files/js/mootools-1.2-more.js"></script>
+       <script type="text/javascript" src="/files/js/moowheel.js"></script>
+       
+       
+       
+
+     <script type="text/javascript">
+     var araaywheelData = new Array();
+     
+     var flen = {{flen}};
+     var theData =  {{friends}};
+	 var u = 0;
+	 var activeAjaxConnections = 0;
+	 for( x = 0; theData[x]; x++ ) {		
+	               jQuery.ajax({
+	                   beforeSend: function() {
+                        activeAjaxConnections++;  },
+						url: "../../getfriends/?id="+theData[x]+"&site={{site}}",
+						dataType: "json",
+						success: function(data){  activeAjaxConnections--;  araaywheelData[u]= { id: theData[u] ,text: theData[u] ,connections: data.contacts };   u++; 
+						jQuery("div#load").html(theData[u]+" = "+flen--);
+						// alert(activeAjaxConnections);
+						  if (0 == activeAjaxConnections) {
+						 
+                              // this was the last Ajax connection, do the thing
+                                    // alert('this was the last Ajax connection');  
+                                     
+                                                    new MooWheel.Remote(araaywheelData, $('canvas'), {  onItemClick: function(item, e) {
+														var url = "{{siteurl}}"+item.id;
+														window.open(url);
+													 },
+													 type: 'heat'
+												   });  
+							  jQuery("div#load").html("{{ site }} SocialWheel for {{ id }} ");
+                                                        
+						      }
+						}
+					});
+	  }
+      </script>
+     
+</head>
+   
+<body>
+    <div id="wrapper"  >
+    <div id="sbox" >
+ <a href="http://socialwheel.appspot.com" border="0" ><img src="/files/images/socialwheel.png" border="0" alt="twitter" name="twitter" > </a>
+			
+			     <div id="load">Getting {{ id }}'s friends</div>
+			</div>
+<!-- .wrapper -->
+ </div>
+           
+      <br>
+      <div id="canvas"> <strong>Loading, please wait... </strong></div>
+      
+      
+ <br>
+
+   </body>
+</html>
+
